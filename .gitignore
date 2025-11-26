@@ -1,0 +1,82 @@
+# Flutter/Dart/Pub
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+flutter_*.png
+
+# Android
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/.gradle/
+**/android/local.properties
+**/android/app/google-services.json
+
+# iOS
+**/ios/Pods/
+**/ios/Runner.xcworkspace/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/App.framework
+**/ios/Flutter/engine
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/.generated/
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# macOS
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/GeneratedPluginRegistrant.swift
+**/macos/Pods/
+**/macos/Runner.xcworkspace/
+
+# Web
+**/web/.dart_tool/
+**/web/.packages
+
+# Linux
+**/linux/flutter/ephemeral
+
+# Windows
+**/windows/flutter/ephemeral
+
+# VS Code
+.vscode/
+.history/
+
+# Xcode user-specific
+**/*.mode1v3
+**/*.pbxuser
+**/*.xcworkspace
+**/*xcuserdata*
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# Dart Analysis
+.analysis_options
+
+# Crash Reports
+crashlytics/
+firebase/
+firebase_app_id_file.json
+
+# Sensitive
+.env
+*.env
+
+# Certificates & Keys
+*.jks
+*.keystore
+*.key
+*.p12
+*.pem
+
+# Other
+**/coverage/
