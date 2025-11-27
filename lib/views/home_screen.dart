@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:go_router/go_router.dart';
 
 import '../viewmodels/university_viewmodel.dart';
-import '../utils/country_codes.dart'; // <-- NEW IMPORT
+import '../utils/country_codes.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -37,17 +37,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         child: Column(
           children: [
             // ---------------- PROFILE ----------------
-            Row(
+            const Row(
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 28,
                   backgroundImage:
                       NetworkImage("https://i.pravatar.cc/150?img=10"),
                 ),
-                const SizedBox(width: 14),
+                SizedBox(width: 14),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       "Hello, Chris 👋",
                       style:

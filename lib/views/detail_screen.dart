@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/university.dart';
-import '../utils/country_codes.dart'; // <-- NEW IMPORT
+import '../utils/country_codes.dart';
 
 class DetailScreen extends StatelessWidget {
   final University university;
