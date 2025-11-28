@@ -1,6 +1,7 @@
 ## Overview
 
-Global University Search App is an education Flutter Application that enables users to search for their universities across the world quickly. Users are required to enter a country name, the app fetches results from Hipolabs Universities API, the user can then view details including the university name, website
+Global University Search App is an education Flutter Application that enables users to search for their universities across the world quickly. Users are required to enter a country name, the app fetches results from Hipolabs Universities API (official GitHub: https://github.com/Hipo/university-domains-list
+), the user can then view details including the university name, website
 
 This project has been built with clean architecture principles and Flutter best practices. The app uses MVVM pattern, Riverpod for state management and GoRouter for routing. The architecture ensures maintainability, scalability, separation of concerns, and testability
 
@@ -13,7 +14,7 @@ The app focuses smooth and polished experience:
 - Graceful handling of empty results and network issues
 - Clear architecture separation: Models, Views, ViewModels, Services
 
-Additionally, the project includes IOS specific security configuration to safely allow access to the API endpoint, which serves data via HTTP instead of HTTPS, which is handled through an App Transport Security (ATS) exception restricted to the required domain only.
+Additionally, the project includes IOS specific security configuration to safely allow access to the API endpoint, which serves data via HTTP instead of HTTPS, which is handled through an App Transport Security (ATS) exception restricted to the required domain only. Android also blocks http requests, hence the app includes a secure, domain-restricted network configuration that allows cleartext traffic only for universities.hipolabs.com, keeping all other HTTP domains blocked.
 
 ## Key Features
 
@@ -89,13 +90,14 @@ Additionally, the project includes IOS specific security configuration to safely
 
 ---
 
-### APP Walkthrough
+### 🎞️ APP Walkthrough
 <table align="center">
 <td align="center">
   <img src="readme_assets/search.gif" width="250"><br>
-  <br>App Walkthrough</br>
+  <sub><i>(GIF may take a moment to load)</i></sub>
 </td>
 </table>
+
 
 
 
@@ -328,7 +330,7 @@ lib/
 
 ## Security Considerations
 
-### 1. HTTPS vs HTTP (Important for iOS)
+### 1. HTTPS vs HTTP
 
 The Hipolabs Universities API provides data over **HTTP only**, not HTTPS.
 
@@ -351,6 +353,37 @@ Since iOS blocks HTTP requests by default due to **App Transport Security (ATS)*
 </dict>
 
 ```
+Android (API 28 and above) also blocks all HTTP requests by default. Since the Hipolabs API is served over **HTTP**, the app includes a secure, domain-restricted network configuration that allows cleartext traffic **only for `universities.hipolabs.com`**, keeping all other HTTP domains blocked.
+
+### AndroidManifest.xml
+
+`android/app/src/main/AndroidManifest.xml`
+
+```xml
+<applicationandroid:name="${applicationName}"
+    android:label="university_search_app"
+    android:icon="@mipmap/ic_launcher"
+    android:usesCleartextTraffic="true"
+    android:networkSecurityConfig="@xml/network_security_config">
+
+```
+
+### Network Security Config
+
+`android/app/src/main/res/xml/network_security_config.xml`
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain>universities.hipolabs.com</domain>
+    </domain-config>
+</network-security-config>
+
+```
+
+###
+
 
 **Security Benefits:**
 
