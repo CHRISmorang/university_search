@@ -330,14 +330,21 @@ lib/
 
 ## Security Considerations
 
-### 1. HTTPS vs HTTP
+### 1. HTTP API Access on iOS & Android
 
-The Hipolabs Universities API provides data over **HTTP only**, not HTTPS.
+The Hipolabs Universities API serves data over **HTTP**, not HTTPS. Both iOS and Android block insecure HTTP by default, so the project includes **strict, domain-restricted exceptions** that allow only the required API endpoint while keeping the rest of the app secure.
 
-Since iOS blocks HTTP requests by default due to **App Transport Security (ATS)**, the app includes a **restricted ATS exception ONLY for the required domain**:
+---
+
+## **iOS – App Transport Security (ATS)**
+
+iOS blocks all HTTP traffic unless explicitly allowed.
+
+To keep the app secure, an ATS exception is added **only for the Hipolabs API domain**:
+
+`ios/Runner/Info.plist`:
 
 ```xml
-<!-- Allow HTTP only to universities.hipolabs.com -->
 <key>NSAppTransportSecurity</key>
 <dict>
     <key>NSExceptionDomains</key>
@@ -353,11 +360,22 @@ Since iOS blocks HTTP requests by default due to **App Transport Security (ATS)*
 </dict>
 
 ```
-Android (API 28 and above) also blocks all HTTP requests by default. Since the Hipolabs API is served over **HTTP**, the app includes a secure, domain-restricted network configuration that allows cleartext traffic **only for `universities.hipolabs.com`**, keeping all other HTTP domains blocked.
 
-### AndroidManifest.xml
+### Benefits
 
-`android/app/src/main/AndroidManifest.xml`
+- Only the required API domain is allowed
+- All other HTTP domains remain blocked
+- No wildcard or unsafe global overrides
+
+---
+
+## **Android – HTTP Traffic + Browser Access**
+
+Android API 28+ blocks cleartext (HTTP) by default.
+
+To safely allow communication with the Hipolabs API, the app uses a **restricted Network Security Configuration**.
+
+### `AndroidManifest.xml` (key part)
 
 ```xml
 <applicationandroid:name="${applicationName}"
@@ -368,9 +386,9 @@ Android (API 28 and above) also blocks all HTTP requests by default. Since the H
 
 ```
 
-### Network Security Config
+---
 
-`android/app/src/main/res/xml/network_security_config.xml`
+### `android/app/src/main/res/xml/network_security_config.xml`
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -382,14 +400,44 @@ Android (API 28 and above) also blocks all HTTP requests by default. Since the H
 
 ```
 
-###
+### Benefits
 
+- Only `universities.hipolabs.com` can use HTTP
+- All other HTTP traffic remains blocked
+- Follows least-privilege security design
 
-**Security Benefits:**
+---
 
-- Only *one domain* is allowed (least privilege principle)
-- All other network calls remain secure
-- No wildcard or global insecure access
+## **Android 11+ Browser Launch Support**
+
+Android 11+ restricts launching external apps (like Chrome, Firefox, Edge).
+
+The app includes a `<queries>` block so `url_launcher` can open **any installed browser**, ensuring website links work in both debug and release builds.
+
+Add inside `AndroidManifest.xml` (above `<application>`):
+
+```xml
+<queries>
+    <intent>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="http"/>
+    </intent>
+    <intent>
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https"/>
+    </intent>
+</queries>
+
+```
+
+### What this enables
+
+- Opens university websites in **any installed browser**
+- Compatible with Android 11, 12, 13, 14
+- Required for release mode (debug mode works without it)
+
 
 ### 2. Safe Error Handling
 
